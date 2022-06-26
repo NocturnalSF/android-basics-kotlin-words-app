@@ -55,7 +55,8 @@ class LetterListFragment : Fragment() {
     ): View? {
         // Retrieve and inflate the layout for this fragment
         _binding = FragmentLetterListBinding.inflate(inflater, container, false)
-        return binding.root
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,5 +128,4 @@ class LetterListFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
