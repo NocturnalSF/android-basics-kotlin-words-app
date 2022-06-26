@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Button
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -53,7 +54,7 @@ class LetterAdapter :
             .from(parent.context)
             .inflate(R.layout.item_view, parent, false)
         // Setup custom accessibility delegate to set the text read
-        layout.accessibilityDelegate = WordAdapter
+        layout.accessibilityDelegate = Accessibility
         return LetterViewHolder(layout)
     }
 
@@ -63,12 +64,15 @@ class LetterAdapter :
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
         val item = list[position]
         holder.button.text = item.toString()
-        holder.button.setOnClickListener {
-            val context = holder.view.context
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.LETTER, holder.button.text.toString())
-            context.startActivity(intent)
 
+        // Assigns a [OnClickListener] to the button contained in the [ViewHolder]
+        holder.button.setOnClickListener {
+            // Create an action from WordList to DetailList
+            // using the required arguments
+            val action =
+                LetterListFragmentDirections.actionLetterListFragmentToWordListFragment(letter = holder.button.text.toString())
+            // Navigate using that action
+            holder.view.findNavController().navigate(action)
         }
     }
 
@@ -76,10 +80,7 @@ class LetterAdapter :
     // an accessibility service
     companion object Accessibility : View.AccessibilityDelegate() {
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        override fun onInitializeAccessibilityNodeInfo(
-            host: View?,
-            info: AccessibilityNodeInfo?
-        ) {
+        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
             super.onInitializeAccessibilityNodeInfo(host, info)
             // With `null` as the second argument to [AccessibilityAction], the
             // accessibility service announces "double tap to activate".

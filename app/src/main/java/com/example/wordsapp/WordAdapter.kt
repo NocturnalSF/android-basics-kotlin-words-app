@@ -83,9 +83,11 @@ class WordAdapter(private val letterId: String, context: Context) :
 
         // Set the text of the WordViewHolder
         holder.button.text = item
+
+        // Assigns a [OnClickListener] to the button contained in the [ViewHolder]
         holder.button.setOnClickListener {
-            val queryURL: Uri = Uri.parse("${DetailActivity.SEARCH_PREFIX}${item}")
-            val intent = Intent(Intent.ACTION_VIEW, queryURL)
+            val queryUrl: Uri = Uri.parse("${WordListFragment.SEARCH_PREFIX}${item}")
+            val intent = Intent(Intent.ACTION_VIEW, queryUrl)
             context.startActivity(intent)
         }
     }
@@ -94,10 +96,7 @@ class WordAdapter(private val letterId: String, context: Context) :
     // an accessibility service
     companion object Accessibility : View.AccessibilityDelegate() {
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        override fun onInitializeAccessibilityNodeInfo(
-            host: View?,
-            info: AccessibilityNodeInfo?
-        ) {
+        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
             super.onInitializeAccessibilityNodeInfo(host, info)
             // With `null` as the second argument to [AccessibilityAction], the
             // accessibility service announces "double tap to activate".
